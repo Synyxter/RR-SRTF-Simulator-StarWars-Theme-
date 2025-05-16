@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 import os
+from app.gui.rr_view import RRView
 
 class MainView(ctk.CTk):
     def __init__(self):
@@ -14,7 +15,7 @@ class MainView(ctk.CTk):
         self._load_ui()
 
     def _load_background(self):
-        fondo_path = os.path.join("app", "assets", "mainbackgroundsw.jpg")  # Aquí va fondo dual
+        fondo_path = os.path.join("app", "assets", "mainbackgroundsw.jpg")  
         fondo = Image.open(fondo_path)
 
         fondo_img = ctk.CTkImage(light_image=fondo, dark_image=fondo, size=(1000, 600))
@@ -25,8 +26,8 @@ class MainView(ctk.CTk):
 
     def _load_ui(self):
         self._load_title()
-        self._load_desc()
         self._load_buttons()
+        
 
     def _load_title(self):
         self.title_label = ctk.CTkLabel(
@@ -38,19 +39,27 @@ class MainView(ctk.CTk):
         )
         self.title_label.place(relx=0.5, rely=0.1, anchor="center")
         
-    def _load_desc(self):
-        self.desc_label = ctk.CTkLabel(
-            self,
-            text="Bienvenido Padawan",
-            font=("Times New Roman", 18, "bold"),  
-            text_color="white",
-            bg_color= "black"
+        mensaje = (
+            "RR y SRTF son algoritmos de planificación de procesos.\n"
+            "RR es justo pero equitativo, ideal para sistemas compartidos.\n"
+            "SRTF es eficiente y veloz, óptimo para tareas cortas.\n"
+            "Ambos buscan mejorar el rendimiento del sistema. . ."
         )
-        self.desc_label.place(relx=0.104, rely=0.7, anchor="center")
+
+        self.info_label = ctk.CTkLabel(
+            self,
+            text=mensaje,
+            font=("Century Gothic", 16, "bold"),  # Puedes cambiarlo a "Star Jedi" si ya está registrado
+            text_color="#E0E0E0",
+            justify="left",
+            bg_color="black"
+        )
+        self.info_label.place(x=40, y=370)
+        
 
     def _load_buttons(self):
         
-        icon_rr_path = os.path.join("app", "assets", "round_robin_icon.png")
+        icon_rr_path = os.path.join("app", "assets", "round_robin_icon.jpg")
         icon_srtf_path = os.path.join("app", "assets", "srtf_icon.jpg")
         icon_dual_path = os.path.join("app", "assets", "dual_icon.jpg")
 
@@ -100,11 +109,32 @@ class MainView(ctk.CTk):
         )
         boton_dual.place(x=40, y=290)
 
-    # def _open_rr(self):
-    #     from app.gui.rr_view import RRView
-    #     self.destroy()
-    #     rr_view = RRView()
-    #     rr_view.mainloop()
+    def _open_rr(self):
+        self.clear_view()
+        self.rr_view = RRView(self, volver_callback=self._volver_menu)
+        
+    def clear_view(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        
+    def _open_srtf(self):
+        self.clear_view()
+    # Solo mostrará un aviso de momento mientras se construye la vista SRTF
+        label = ctk.CTkLabel(self, text="Vista SRTF en desarrollo...", text_color="white", font=("Arial", 20))
+        label.place(relx=0.5, rely=0.5, anchor="center")
+
+    def _open_dual(self):
+        self.clear_view()
+        label = ctk.CTkLabel(self, text="Vista dual (RR + SRTF) en desarrollo...", text_color="white", font=("Arial", 20))
+        label.place(relx=0.5, rely=0.5, anchor="center")
+        
+    def _volver_menu(self):
+        self.clear_view()
+        self._load_ui()
+
+
+
+
 
     # def _open_srtf(self):
     #     from app.gui.srtf_view import SRTFView
@@ -119,11 +149,3 @@ class MainView(ctk.CTk):
     #     dual_view.mainloop()
     
         # Por ahora solo imprimimos un mensaje de prueba para que no dé error
-    def _open_rr(self):
-        print("Abrir RR View - pendiente de implementar")
-
-    def _open_srtf(self):
-        print("Abrir SRTF View - pendiente de implementar")
-
-    def _open_dual(self):
-        print("Abrir Dual View - pendiente de implementar")
