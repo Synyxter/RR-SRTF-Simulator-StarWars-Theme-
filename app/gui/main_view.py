@@ -2,6 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 import os
 from app.gui.rr_view import RRView
+from app.gui.srtf_view import SRTFView
 
 class MainView(ctk.CTk):
     def __init__(self):
@@ -114,21 +115,23 @@ class MainView(ctk.CTk):
         )
         boton_dual.place(x=40, y=290)
 
-    def _open_rr(self):
-        self.clear_view()
-        self.rr_view = RRView(self, self._volver_menu)
+    def show_rr_view(self):
+        if self.current_view:
+            self.current_view.destroy()
+        self.current_view = RRView(master=self, volver_callback_menu_principal=self.create_main_menu_buttons)
+        # RRView se empaqueta a sí misma en su __init__
 
+    def show_srtf_view(self):
+        if self.current_view:
+            self.current_view.destroy()
+        self.current_view = SRTFView(master=self, volver_callback_menu_principal=self.create_main_menu_buttons)
 
         
     def clear_view(self):
         for widget in self.winfo_children():
             widget.destroy()
         
-    def _open_srtf(self):
-        self.clear_view()
-    # Solo mostrará un aviso de momento mientras se construye la vista SRTF
-        label = ctk.CTkLabel(self, text="Vista SRTF en desarrollo...", text_color="white", font=("Arial", 20))
-        label.place(relx=0.5, rely=0.5, anchor="center")
+    
 
     def _open_dual(self):
         self.clear_view()
