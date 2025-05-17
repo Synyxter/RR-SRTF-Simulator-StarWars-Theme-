@@ -1,8 +1,13 @@
 import customtkinter as ctk
 from PIL import Image
 import os
+<<<<<<< HEAD
 from app.gui.rr_view import RRView
 from app.gui.srtf_view import SRTFView
+=======
+from app.gui.views import RRView, SRTFView
+
+>>>>>>> 2ce6b94a9b4848c25fe812224a6a8c7c74b396f1
 
 class MainView(ctk.CTk):
     def __init__(self):
@@ -115,6 +120,7 @@ class MainView(ctk.CTk):
         )
         boton_dual.place(x=40, y=290)
 
+<<<<<<< HEAD
     def show_rr_view(self):
         if self.current_view:
             self.current_view.destroy()
@@ -125,13 +131,25 @@ class MainView(ctk.CTk):
         if self.current_view:
             self.current_view.destroy()
         self.current_view = SRTFView(master=self, volver_callback_menu_principal=self.create_main_menu_buttons)
+=======
+    def _open_rr(self):
+        self.clear_view()
+        self.rr_view = RRView(self, self._volver_menu)
+        
+    def _open_srtf(self):
+        self.clear_view()
+        self.srtf_view = SRTFView(self, self._volver_menu)
+>>>>>>> 2ce6b94a9b4848c25fe812224a6a8c7c74b396f1
 
         
     def clear_view(self):
         for widget in self.winfo_children():
             widget.destroy()
+<<<<<<< HEAD
         
     
+=======
+>>>>>>> 2ce6b94a9b4848c25fe812224a6a8c7c74b396f1
 
     def _open_dual(self):
         self.clear_view()
