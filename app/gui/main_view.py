@@ -2,6 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 import os
 from app.gui.rr_view import RRView
+from app.gui.srtf_view import SRTFView
 
 class MainView(ctk.CTk):
     def __init__(self):
@@ -117,18 +118,16 @@ class MainView(ctk.CTk):
     def _open_rr(self):
         self.clear_view()
         self.rr_view = RRView(self, self._volver_menu)
+        
+    def _open_srtf(self):
+        self.clear_view()
+        self.srtf_view = SRTFView(self, self._volver_menu)
 
 
         
     def clear_view(self):
         for widget in self.winfo_children():
             widget.destroy()
-        
-    def _open_srtf(self):
-        self.clear_view()
-    # Solo mostrará un aviso de momento mientras se construye la vista SRTF
-        label = ctk.CTkLabel(self, text="Vista SRTF en desarrollo...", text_color="white", font=("Arial", 20))
-        label.place(relx=0.5, rely=0.5, anchor="center")
 
     def _open_dual(self):
         self.clear_view()
@@ -139,20 +138,18 @@ class MainView(ctk.CTk):
         self.clear_view()
         self._load_ui()
 
+if __name__ == '__main__':
+    app = ctk.CTk()
+    app.title("Simulador ")
 
+# Para Windows, usa .ico. Para algunos Linux, .xbm o .png pueden funcionar.
+# macOS maneja los íconos de ventana de manera diferente, a menudo a través del bundle de la app.
+try:
+    # Asegúrate que la ruta al ícono de la ventana sea correcta
+    # Este ícono es para la ventana, no para el archivo .exe en sí.
+    app.iconbitmap("app/assets/logolinuxstarwars.png")
+except Exception as e:
+    print(f"No se pudo establecer el ícono de la ventana: {e}")
 
-
-
-    # def _open_srtf(self):
-    #     from app.gui.srtf_view import SRTFView
-    #     self.destroy()
-    #     srtf_view = SRTFView()
-    #     srtf_view.mainloop()
-
-    # def _open_dual(self):
-    #     from app.gui.dual_view import DualView
-    #     self.destroy()
-    #     dual_view = DualView()
-    #     dual_view.mainloop()
-    
-        # Por ahora solo imprimimos un mensaje de prueba para que no dé error
+# ... resto de tu configuración de la app ...
+app.mainloop()

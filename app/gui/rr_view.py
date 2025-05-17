@@ -6,6 +6,32 @@ import numpy as np
 import os
 import traceback # Para imprimir trazas de error completas
 
+
+class BaseView(ctk.CTkFrame):
+    def __init__(self, master, *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
+
+        # Cargar la imagen de fondo
+        if not os.path.exists(BG_IMAGE_PATH):
+            raise FileNotFoundError(f"No se encontró la imagen de fondo en: {BG_IMAGE_PATH}")
+
+        bg_image_pil = Image.open(BG_IMAGE_PATH)
+
+        # Ajustar la imagen al tamaño del master
+        width = master.winfo_screenwidth()
+        height = master.winfo_screenheight()
+        bg_image_pil = bg_image_pil.resize((width, height))
+
+        # Convertir a PhotoImage para tkinter
+        self.bg_image = ImageTk.PhotoImage(bg_image_pil)
+
+        # Crear un label para colocar como fondo
+        self.bg_label = ctk.CTkLabel(self, image=self.bg_image, text="")
+        self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # Asegurar que el frame pueda contener otros widgets por encima
+        self.bg_label.lower()  # Envía el fondo al fondo de la pila de widgets
+        
 # --- Configuración de Rutas (como en la versión anterior, asegúrate que sea correcta para tu proyecto) ---
 try:
     CURRENT_SCRIPT_PATH = os.path.abspath(__file__)
@@ -21,6 +47,11 @@ try:
 except NameError:
     ASSETS_DIR = "assets"
     print("Advertencia: __file__ no definido. Usando rutas relativas simples para assets.")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ASSETS_DIR = os.path.join(BASE_DIR, "..", "assets")
+BG_IMAGE_PATH = os.path.abspath(os.path.join(ASSETS_DIR, "backgroundstarwars.jpg"))
+
 
 BG_IMAGE_PATH = os.path.join(ASSETS_DIR, "backgroundstarwars.jpg").replace("\\", "/")
 ICON_VOLVER_PATH = os.path.join(ASSETS_DIR, "icon_volver.png").replace("\\", "/")
