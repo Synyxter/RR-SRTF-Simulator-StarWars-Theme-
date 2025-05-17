@@ -10,19 +10,24 @@ class MainView(ctk.CTk):
         self.title("Simulador Planificación Cpu")
         self.geometry("1000x600")
         self.resizable(False, False)
-
+        self.show()
         self._load_background()
         self._load_ui()
 
     def _load_background(self):
         fondo_path = os.path.join("app", "assets", "mainbackgroundsw.jpg")  
         fondo = Image.open(fondo_path)
+        
 
         fondo_img = ctk.CTkImage(light_image=fondo, dark_image=fondo, size=(1000, 600))
 
         self.bg_label = ctk.CTkLabel(self, image=fondo_img, text="")
         self.bg_label.image = fondo_img
         self.bg_label.place(x=0, y=0)
+
+    def show(self):
+        self.lift()
+        self._load_background()
 
     def _load_ui(self):
         self._load_title()
@@ -111,7 +116,9 @@ class MainView(ctk.CTk):
 
     def _open_rr(self):
         self.clear_view()
-        self.rr_view = RRView(self, volver_callback=self._volver_menu)
+        self.rr_view = RRView(self, self._volver_menu)
+
+
         
     def clear_view(self):
         for widget in self.winfo_children():
